@@ -5,12 +5,12 @@
 #include <addons/RTDBHelper.h>
 
 // WiFi
-#define WIFI_SSID "Donny CH_2"
-#define WIFI_PASSWORD "dch241099"
+#define WIFI_SSID " " // input WiFi Name
+#define WIFI_PASSWORD " " // input WiFi password
 
 // API Key
-#define API_KEY "AIzaSyBccC-8UxnLL7DgKBqQOWKH4u2ff2SgHUU"
-#define DATABASE_URL "https://air-guard-01-default-rtdb.asia-southeast1.firebasedatabase.app/"
+#define API_KEY " " // input API key
+#define DATABASE_URL " " // input realtime database firebase URL 
 
 // DATABASE
 FirebaseData fbdo;
