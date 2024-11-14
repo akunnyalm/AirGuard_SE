@@ -4,15 +4,16 @@
 #include <addons/TokenHelper.h>
 #include <addons/RTDBHelper.h>
 
-// WiFi
+// define WiFi
 #define WIFI_SSID " " // input WiFi Name
 #define WIFI_PASSWORD " " // input WiFi password
 
-// API Key
+// Using Firebase
+// RTDB API Key
 #define API_KEY " " // input API key
 #define DATABASE_URL " " // input realtime database firebase URL 
 
-// DATABASE
+// define DATABASE
 FirebaseData fbdo;
 FirebaseAuth auth;
 FirebaseConfig config;
@@ -21,7 +22,7 @@ unsigned long sendDataPrevMillis = 0;
 bool signupOK = false;
 
 
-// DHT11
+// define DHT11
 #include  <DHT.h>
 #define   DHTPIN  16
 #define   DHTTYPE DHT11
@@ -29,7 +30,7 @@ DHT dht(DHTPIN, DHTTYPE);
 
 float humid, temp;
 
-// MQ SENSORS
+// define MQ SENSORS
 #include <MQUnifiedsensor.h>
 #define   Board                   ("ESP-32")
 #define   Voltage_Resolution      (5)
@@ -53,7 +54,7 @@ MQUnifiedsensor MQ7(Board, Voltage_Resolution, ADC_Bit_Resolution, Pin3, Type);
 
 float ppmMQ2, ppmMQ135, ppmMQ8, ppmMQ7;
 
-// LCD
+// define LCD
 #include <LiquidCrystal_I2C.h>
 #define   I2C_SCL   D22
 #define   I2C_SDA   D21
@@ -62,7 +63,7 @@ LiquidCrystal_I2C lcd (0x27, 16, 2);
 void setup() {
   Serial.begin(115200);
 
-  //WiFi
+  // WiFi SETUP
   WiFi.begin(WIFI_SSID, WIFI_PASSWORD);
   Serial.print("Connecting to Wi-Fi");
   while(WiFi.status() != WL_CONNECTED) {
@@ -73,7 +74,7 @@ void setup() {
   Serial.println(WiFi.localIP());
   Serial.println();
 
-  // DATABASE
+  // DATABASE SETUP
   config.api_key = API_KEY;
   config.database_url = DATABASE_URL;
   if(Firebase.signUp(&config, &auth, "", "")) {
@@ -176,8 +177,8 @@ void loop() {
 
   if(Firebase.ready() && signupOK && (millis() - sendDataPrevMillis > 5000 || sendDataPrevMillis == 0)) {
     sendDataPrevMillis = millis();
-    // STORE DATA
-
+    
+    // STORE DATA TO REALTIME DATABASE
     if(Firebase.RTDB.setFloat(&fbdo, "/Sensor/MQ-2", ppmMQ2)) {
       Serial.println(); Serial.print(ppmMQ2);
       Serial.print("- successfully saved to: " + fbdo.dataPath());
@@ -229,7 +230,7 @@ void loop() {
 
   }
 
-  // LCD
+  // PRINT SENSOR DATA TO LCD
   lcd.clear();
   lcd.setCursor(0,0);
   lcd.print("CH4: ");
